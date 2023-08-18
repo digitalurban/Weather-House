@@ -126,17 +126,10 @@ def iconlight():
 #Set Up Lights for Conditions
     
 def partly_cloudy():
-    for i in range(256):
-        r = int(color[0] * i / 255)
-        g = int(color[1] * i / 255)
-        b = int(color[2] * i / 255)
-        for j in range(numpix):
-            if j % 2 == 0:
-                pixels.set_pixel(j, (r, g, b))
-            else:
-                pixels.set_pixel(j, (0, 0, 0))
-        pixels.show()
-        sleep(duration / 256)
+    partly_cloudy = ((255, 255, 255), 30)
+    pixels.fill((partly_cloudy))
+    pixels.show()
+
 
 def moving_clouds():
     for i in range(256):
