@@ -14,7 +14,6 @@ from random import randint
 ssid = 'YOURSSID'
 password = 'YOURWIFIPASSWORD'
 
-
 #Set Open Weather Map API
 
 def get_conditions():
@@ -35,33 +34,27 @@ def get_conditions():
     conditions = int(data ["current"]["weather"][0]["id"])
     print("Current Conditions = ", conditions)
     
-#Get time to determine if its nigh or day
-    
+#Get time to determine if its night or day
+
 detailed_time = gmtime()
 
 print (detailed_time)
 
 global night
 
-global hour
-
-def night():
-    
-    global night
-    hour = (detailed_time[3])
-    print("Hour = ", hour)
-    if hour >= 20 or hour <= 6:
-        night = 1
-        print ("Night = ", night)
-    else:
-        night = 0
-        print ("Night = ", night)
+hour = (detailed_time[3])
+print("Hour = ", hour)
+if hour >= 20 or hour <= 6:
+    night = 1
+    print ("Night = ", night)
+else:
+    night = 0
+    print ("Night = ", night)
 
 # Set up Servo Speed and Range
 
 servospeed = 0.05 #Speed of the servo movement - 0.05 provides a good smooth speed
 servorange = 155 #Edit for the range of the servo, the Lego Non Continuous is Approx 155 Degrees for a 360 sweep.
-
 
 # Set up Servo Pins and Data Range
 servoPin = PWM(Pin(16))
@@ -88,7 +81,9 @@ def connect():
 # Handle connection error
     if wlan.status() != 3:
         raise RuntimeError('network connection failed')
+        sleep(5)
         connect()
+    
     else:
         print('connected')
         status = wlan.ifconfig()
@@ -124,7 +119,6 @@ def iconlight():
     toplight.show()
 
 #Set Up Lights for Conditions
-    
     
 def partly_cloudy():
     
@@ -278,22 +272,21 @@ def servo(degrees):
 
 # First Sweep - Degree Range to be Edited According to Servo for Setup
 
-def sweep():
-    n= 0
-    while n < servorange :
-      
-        servo(n)
-        sleep(servospeed)
-        n = n+1
-        
-    sleep(5)    
-    n = servorange
-    while n >= 1 :
-      
-        servo(n)
-        sleep(servospeed)
-        n = n-1
-    sleep(5)
+n= 0
+while n < servorange :
+    
+    servo(n)
+    sleep(servospeed)
+    n = n+1
+    
+sleep(5)    
+n = servorange
+while n >= 1 :
+  
+    servo(n)
+    sleep(servospeed)
+    n = n-1
+sleep(5)
         
 # Set up Servo Position and Lighting for Conditions
 
@@ -392,8 +385,6 @@ def move():
 while True:
     connect()
     iconlight()
-    night()
-    sweep()
     get_conditions()
     move()
     
