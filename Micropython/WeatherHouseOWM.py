@@ -125,9 +125,10 @@ def iconlight():
 
 #Set Up Lights for Conditions
     
+    
 def partly_cloudy():
-    partly_cloudy = ((255, 255, 255), 30)
-    pixels.fill((partly_cloudy))
+    
+    pixels.fill((WHITE))
     pixels.show()
 
 
