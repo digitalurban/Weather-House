@@ -3,7 +3,7 @@ Python/Laser Cut/3D Printed Weather House
 
 ![Screen](https://www.digitalurban.org/wp-content/uploads/2023/08/Weatherhousewide@0.5x-1024x419.jpg)
 
-Traditional German weather houses are small, decorative structures that are popular in Germany and other parts of Europe. They are often made from wood and feature a small door that opens to reveal a figure inside. These figures are usually a man and a woman, and they are used to predict the weather. This github is part of a post on [Digital Urban](http://) which details an updated version.
+Traditional German weather houses are small, decorative structures that are popular in Germany and other parts of Europe. They are often made from wood and feature a small door that opens to reveal a figure inside. These figures are usually a man and a woman, and they are used to predict the weather. This github is part of a post on [Digital Urban](http://) which provides more details.
 
 ## Parts
 
@@ -25,9 +25,7 @@ The LED strip goes under the 3D printed enclosure to light up the Weather House.
 
 ## Micropython Code
 
-
-
-
+The Micropython code uses the [Open Weather API](https://openweathermap.org/api) which is free for 1000 calls per day, you need to add your key to the code as well as the Lat and Long of the location you want to show the data from.
 
 ## The Case
 
