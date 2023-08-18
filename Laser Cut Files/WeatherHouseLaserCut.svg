@@ -1,0 +1,162 @@
+<svg id="svgcontent" width="300mm" height="210mm" viewBox="0 0 3000 2100" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" data-top="-234" data-left="-532" data-zoom="0.186" data-en_af="true" data-en_diode="false" data-rotary_mode="false" data-engrave_dpi="medium">
+ <defs>
+  <symbol overflow="visible" id="svg_127" data-bbox="{&quot;x&quot;:0,&quot;y&quot;:0,&quot;width&quot;:880,&quot;height&quot;:1076.95654}" data-image-symbol="svg_127_image">
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m760,586.9565l0,90l-140,0l0,-90l140,0z" id="svg_128"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m0,1076.9565l0,-200l0,40" id="svg_129"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m0,776.9565l30,0l0,100l-30,0" id="svg_130"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m0,776.9565l0,-336.9565" id="svg_131"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m880,876.9565l-30,0l0,-100l30,0l0,-336.9565" id="svg_132"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m880,876.9565l0,200" id="svg_133"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m488,1076.9565l392,0" id="svg_134"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m392,1076.9565l-392,0" id="svg_135"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m392,1076.9565l0,-30l96,0l0,30" id="svg_136"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m260.25,831.9565l-0.5,-10l0.5,0l-0.5,10l0.5,0z" id="svg_137"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m265,827.3732l-10,-0.8334l0,0.8334l10,-0.8334l0,0.8334z" id="svg_138"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m200,821.9565l55,0l0,-95l-55,0l0,95z" id="svg_139"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m255,926.9565l0,-95l-55,0l0,95l55,0z" id="svg_140"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m320,831.9565l-55,0l0,95l55,0l0,-95z" id="svg_141"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m265,726.9565l0,95l55,0l0,-95l-55,0z" id="svg_142"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m625,726.9565l0,95l55,0l0,-95l-55,0z" id="svg_143"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m615,926.9565l-55,0l0,-95l55,0l0,95z" id="svg_144"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m615,726.9565l-55,0l0,95l55,0l0,-95z" id="svg_145"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m619.75,821.9565l0.5,0l-0.5,10l0.5,0l-0.5,-10z" id="svg_146"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m680,926.9565l0,-95l-55,0l0,95l55,0z" id="svg_147"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m615,827.3732l10,-0.8334l0,0.8334l-10,-0.8334l0,0.8334z" id="svg_148"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m184.2587,255.7414l-21.2132,-21.2133l70.7106,-70.7106l21.2132,21.2132" id="svg_149"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m624.6447,184.6447l21.2132,-21.2132l70.7107,70.7106l-21.2132,21.2132" id="svg_150"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m880,440l-184.6446,-184.6447" id="svg_151"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m624.6447,184.6447l-184.6447,-184.6447" id="svg_152"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m0,440l184.2587,-184.2586" id="svg_153"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m254.9693,185.0307l185.0307,-185.0307" id="svg_154"/>
+  </symbol>
+  <symbol overflow="visible" id="svg_127_image" data-origin-symbol="svg_127">
+   <image href="blob:file:///ce995112-5b97-4b4d-a954-5b3d00882e94" id="svg_6" x="0" y="0" width="880" height="1076.95654" filter="url(#filter#000000)"/>
+  </symbol>
+  <symbol overflow="visible" id="svg_180" data-bbox="{&quot;x&quot;:0,&quot;y&quot;:0,&quot;width&quot;:880.77197,&quot;height&quot;:1076.9585}" data-image-symbol="svg_180_image">
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m510.1101,439.4015c0,-18.5652 -7.375,-36.37 -20.5026,-49.4975c-13.1275,-13.1276 -30.9323,-20.5025 -49.4974,-20.5025c-18.5652,0 -36.37,7.3749 -49.4975,20.5025c-13.1276,13.1275 -20.5025,30.9323 -20.5025,49.4975c0,18.5651 7.3749,36.3699 20.5025,49.4974c13.1275,13.1276 30.9323,20.5026 49.4975,20.5026c18.5651,0 36.3699,-7.375 49.4974,-20.5026c13.1276,-13.1275 20.5026,-30.9323 20.5026,-49.4974z" id="svg_181"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m140,821.9565l65,0l0,-95l-65,0l0,95z" id="svg_182"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m209.75,821.9565l0.5,0" id="svg_183"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m215,821.9565l65,0l0,-95l-65,0l0,95z" id="svg_184"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m280,831.9565l-65,0l0,95l65,0l0,-95z" id="svg_185"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m210.25,831.9565l-0.5,0" id="svg_186"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m205,831.9565l-65,0l0,95l65,0l0,-95z" id="svg_187"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m215,826.5994l0,0.7143" id="svg_188"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m205,827.3137l0,-0.7143" id="svg_189"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m665,821.9565l0,-95l-65,0l0,95l65,0z" id="svg_190"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m675,726.9565l0,95l65,0l0,-95l-65,0z" id="svg_191"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m675,831.9565l0,95l65,0l0,-95l-65,0z" id="svg_192"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m665,926.9565l0,-95l-65,0l0,95l65,0z" id="svg_193"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m0,782l30,0l0,96l-30,0" id="svg_194"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m879.1273,878l-30,0l0,-96l29.9903,0" id="svg_195"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m0,440l0,342" id="svg_196"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m0,878l0,198.9565" id="svg_197"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m879.1176,782l1.6544,-341.228" id="svg_198"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m879.1273,878l0,198.9585" id="svg_199"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m488,1076.9565l0,-30l-96,0l0,30" id="svg_200"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m0,1076.9565l392,0" id="svg_201"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m488,1076.9565l392,0" id="svg_202"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m255.3553,184.6447l-21.2132,-21.2132l-70.7106,70.7106l21.2132,21.2132" id="svg_203"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m0,440l184.6447,-184.6447" id="svg_204"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m255.3553,184.6447l184.6447,-184.6447" id="svg_205"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m880.772,440.772l-185.0306,-185.0306l21.2132,-21.2133l-70.7107,-70.7106l-21.2132,21.2132l-185.0307,-185.0307" id="svg_206"/>
+  </symbol>
+  <symbol overflow="visible" id="svg_180_image" data-origin-symbol="svg_180">
+   <image href="blob:file:///614e0188-f9fd-4988-8f45-87c226941aa6" id="svg_8" x="0" y="0" width="880.77197" height="1076.9585" filter="url(#filter#000000)"/>
+  </symbol>
+  <symbol overflow="visible" id="svg_208" data-bbox="{&quot;x&quot;:0,&quot;y&quot;:0,&quot;width&quot;:898.23743,&quot;height&quot;:636.95648}" data-image-symbol="svg_208_image">
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m870,0l-840,0" id="svg_209"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m30,636.9565l0,-200l-30,0l0,-100l30,0" id="svg_210"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m30,0l0,336.9565" id="svg_211"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m30,436.9565l0,200" id="svg_212"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m430,361.9565l-55,0l0,-95l55,0l0,95z" id="svg_213"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m370.25,361.9565l-0.5,0" id="svg_214"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m365,361.9565l-55,0l0,-95l55,0l0,95z" id="svg_215"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m365,366.5398l0,0.8334" id="svg_216"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m365,371.9565l0,95l-55,0l0,-95l55,0z" id="svg_217"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m369.75,371.9565l0.5,0" id="svg_218"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m375,371.9565l55,0l0,95l-55,0l0,-95z" id="svg_219"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m375,361.9565l0,-95" id="svg_220"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m375,367.3732l0,-0.8334" id="svg_221"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m868.2374,335.9565l30,0l0,100l-30,0" id="svg_222"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m870,636.9565l0,-201" id="svg_223"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m870,335.9565l0,-335.9565" id="svg_224"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m402,636.9565l-32,0" id="svg_225"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m870,636.9565l-372,0" id="svg_226"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m402,636.9565l-372,0" id="svg_227"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m498,636.9565l0,-30l-96,0l0,30" id="svg_228"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m260,361.9565l0,-95l-55,0l0,95l55,0z" id="svg_229"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m205,367.3732l0,-0.8334" id="svg_230"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m195,466.9565l-55,0l0,-95l55,0l0,95z" id="svg_231"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m260,371.9565l0,95l-55,0l0,-95l55,0z" id="svg_232"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m199.75,371.9565l0.5,0" id="svg_233"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m140,266.9565l0,95l55,0l0,-95l-55,0z" id="svg_234"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m200.25,361.9565l-0.5,0" id="svg_235"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m205,266.9565l0,95" id="svg_236"/>
+   <path fill="none" stroke="#000000" stroke-width="1px" vector-effect="non-scaling-stroke" d="m195,366.5398l0,0.8334" id="svg_237"/>
+  </symbol>
+  <symbol overflow="visible" id="svg_208_image" data-origin-symbol="svg_208">
+   <image href="blob:file:///80c2311d-81bd-4be3-b712-5b63727c274c" id="svg_9" x="0" y="0" width="898.23743" height="636.95648" filter="url(#filter#000000)"/>
+  </symbol>
+  <symbol data-image-symbol="svg_12_image" data-bbox="{&quot;x&quot;:0,&quot;y&quot;:0,&quot;width&quot;:900,&quot;height&quot;:636.95648}" id="svg_12" overflow="visible">
+   <path id="svg_13" d="m870,0l-840,0" vector-effect="non-scaling-stroke" stroke-width="1px" stroke="#000000" fill="none"/>
+   <path id="svg_14" d="m30,636.9565l180,0" vector-effect="non-scaling-stroke" stroke-width="1px" stroke="#000000" fill="none"/>
+   <path id="svg_15" d="m870,636.9565l0,-200l30,0l0,-100l-30,0" vector-effect="non-scaling-stroke" stroke-width="1px" stroke="#000000" fill="none"/>
+   <path id="svg_16" d="m870,636.9565l0,-200" vector-effect="non-scaling-stroke" stroke-width="1px" stroke="#000000" fill="none"/>
+   <path id="svg_17" d="m870,336.9565l0,-336.9565" vector-effect="non-scaling-stroke" stroke-width="1px" stroke="#000000" fill="none"/>
+   <path id="svg_18" d="m30,0l0,335.9565l-30,0l0,102l30,0l0,199" vector-effect="non-scaling-stroke" stroke-width="1px" stroke="#000000" fill="none"/>
+   <path id="svg_19" d="m330,636.9565l71,0" vector-effect="non-scaling-stroke" stroke-width="1px" stroke="#000000" fill="none"/>
+   <path id="svg_20" d="m500,636.9565l370,0" vector-effect="non-scaling-stroke" stroke-width="1px" stroke="#000000" fill="none"/>
+   <path id="svg_21" d="m210,467.1174l0,169.8391" vector-effect="non-scaling-stroke" stroke-width="1px" stroke="#000000" fill="none"/>
+   <path id="svg_22" d="m401,636.9565l0,-30l99,0l0,30" vector-effect="non-scaling-stroke" stroke-width="1px" stroke="#000000" fill="none"/>
+   <path id="svg_23" d="m210,636.9565l120,0" vector-effect="non-scaling-stroke" stroke-width="1px" stroke="#000000" fill="none"/>
+   <path id="svg_24" d="m210,467.1174l120,0l0,169.8391" vector-effect="non-scaling-stroke" stroke-width="1px" stroke="#000000" fill="none"/>
+   <path id="svg_25" d="m695,347.3732l-10,-0.8334" vector-effect="non-scaling-stroke" stroke-width="1px" stroke="#000000" fill="none"/>
+   <path id="svg_26" d="m685,347.3732l10,-0.8334" vector-effect="non-scaling-stroke" stroke-width="1px" stroke="#000000" fill="none"/>
+   <path id="svg_27" d="m695,286.9565l0,55l55,0l0,-55l-55,0z" vector-effect="non-scaling-stroke" stroke-width="1px" stroke="#000000" fill="none"/>
+   <path id="svg_28" d="m695,346.5398l0,0.8334" vector-effect="non-scaling-stroke" stroke-width="1px" stroke="#000000" fill="none"/>
+   <path id="svg_29" d="m695,351.9565l0,55l55,0l0,-55l-55,0z" vector-effect="non-scaling-stroke" stroke-width="1px" stroke="#000000" fill="none"/>
+   <path id="svg_30" d="m685,406.9565l0,-55l-55,0l0,55l55,0z" vector-effect="non-scaling-stroke" stroke-width="1px" stroke="#000000" fill="none"/>
+   <path id="svg_31" d="m685,341.9565l0,-55l-55,0l0,55l55,0z" vector-effect="non-scaling-stroke" stroke-width="1px" stroke="#000000" fill="none"/>
+   <path id="svg_32" d="m250,456.9565l0,-60l-0.5529,0.1982l-4.8433,2.0062l-4.6501,2.4206l-4.4214,2.8168l-4.159,3.1913l-3.8651,3.5417l-3.5418,3.8651l-3.1913,4.1591l-2.8168,4.4214l-2.4206,4.6501l-2.0062,4.8433l-1.5764,4.9998l-1.1347,5.1181l-0.6843,5.1976l-0.2286,5.2374l0.0925,3.3333l40,0z" vector-effect="non-scaling-stroke" stroke-width="1px" stroke="#000000" fill="none"/>
+   <path id="svg_33" d="m289.8369,456.9565l0,-60.0573l0.7159,0.2555l4.8434,2.0062l4.6501,2.4206l4.4213,2.8168l4.1591,3.1913l3.8651,3.5417l3.5417,3.8651l3.1914,4.1591l2.8167,4.4214l2.4207,4.6501l2.0062,4.8433l1.5764,4.9998l1.1347,5.1181l0.6842,5.1976l0.2287,5.2374l-0.0925,3.3333l-40.1631,0z" vector-effect="non-scaling-stroke" stroke-width="1px" stroke="#000000" fill="none"/>
+   <path id="svg_34" d="m280.8562,456.9565l-20.8562,0l0,-61.0788l20.8562,0l0,61.0788l-20.8562,0l0,0l20.8562,0l0,0z" vector-effect="non-scaling-stroke" stroke-width="1px" stroke="#000000" fill="none"/>
+  </symbol>
+  <symbol data-origin-symbol="svg_12" id="svg_12_image" overflow="visible">
+   <image href="blob:file:///31984d70-4199-4480-903c-bc10691f5ebd" filter="url(#filter#000000)" height="636.95648" width="900" y="0" x="0" id="svg_1"/>
+  </symbol>
+  <symbol data-image-symbol="svg_36_image" data-bbox="{&quot;x&quot;:0,&quot;y&quot;:0,&quot;width&quot;:870,&quot;height&quot;:910.22998}" id="svg_36" overflow="visible">
+   <path id="svg_37" d="m385,30l0,-30l100,0l0,30l355,0l0,375.115l30,0l0,100l-30,0l0,375.115l-355,0l0,30l-100,0l0,-30l-355,0l0,-375.115l-30,0l0,-100l30,0l0,-375.115l355,0z" vector-effect="non-scaling-stroke" stroke-width="1px" stroke="#000000" fill="none"/>
+   <path id="svg_38" d="m635,455.115c0,-53.0433 -21.0714,-103.9141 -58.5786,-141.4214c-37.5073,-37.5072 -88.3781,-58.5786 -141.4214,-58.5786c-53.0433,0 -103.9141,21.0714 -141.4214,58.5786c-37.5072,37.5073 -58.5786,88.3781 -58.5786,141.4214c0,53.0433 21.0714,103.9141 58.5786,141.4214c37.5073,37.5072 88.3781,58.5786 141.4214,58.5786c53.0433,0 103.9141,-21.0714 141.4214,-58.5786c37.5072,-37.5073 58.5786,-88.3781 58.5786,-141.4214z" vector-effect="non-scaling-stroke" stroke-width="1px" stroke="#000000" fill="none"/>
+  </symbol>
+  <symbol data-origin-symbol="svg_36" id="svg_36_image" overflow="visible">
+   <image href="blob:file:///dd026a20-1717-411f-bbc6-d947f0618c8c" filter="url(#filter#000000)" height="910.22998" width="870" y="0" x="0" id="svg_2"/>
+  </symbol>
+  <symbol data-image-symbol="svg_40_image" data-bbox="{&quot;x&quot;:0,&quot;y&quot;:0,&quot;width&quot;:960,&quot;height&quot;:650}" id="svg_40" overflow="visible">
+   <path id="svg_41" d="m960,650l-960,0l0,-267l0,-96l0,-287l960,0l0,287l0,96l0,267z" vector-effect="non-scaling-stroke" stroke-width="1px" stroke="#000000" fill="none"/>
+   <path id="svg_42" d="m65,287l0,96l-30,0l0,-96l30,0z" vector-effect="non-scaling-stroke" stroke-width="1px" stroke="#000000" fill="none"/>
+   <path id="svg_43" d="m895,383l0,-96l30,0l0,96l-30,0z" vector-effect="non-scaling-stroke" stroke-width="1px" stroke="#000000" fill="none"/>
+  </symbol>
+  <symbol data-origin-symbol="svg_40" id="svg_40_image" overflow="visible">
+   <image href="blob:file:///2fe48759-8149-4981-a792-561af8f65e54" filter="url(#filter#000000)" height="650" width="960" y="0" x="0" id="svg_3"/>
+  </symbol>
+ </defs>
+ <g display="inline" data-height="3" data-configName="PlywoodCut3mm" data-zstep="0" data-repeat="1" data-strength="58" data-speed="5" data-color="#000000" class="layer">
+  <title>0</title>
+  <filter color-interpolation-filters="sRGB" primitiveUnits="userSpaceOnUse" filterUnits="objectBoundingBox" id="filter#000000">
+   <feColorMatrix values="1 0 0 0 0, 0 1 0 0 0, 0 0 1 0 0, 0 0 0 1 0" type="matrix"/>
+  </filter>
+  <use data-wireframe="false" data-original-layer="0" id="svg_155" xlink:href="#svg_127" data-ratiofixed="true" data-xform="x=0 y=0 width=880 height=1076.95654296875 " y="1018.11596" x="894.058"/>
+  <use data-wireframe="false" data-original-layer="0" id="svg_207" xlink:href="#svg_180" data-ratiofixed="true" data-xform="x=0 y=0 width=880.77197265625 height=1076.95849609375 " y="1018.11596" x="1970.14506"/>
+  <use data-wireframe="false" data-original-layer="0" id="svg_238" xlink:href="#svg_208" data-ratiofixed="true" data-xform="x=0 y=0 width=898.2374267578125 height=636.9564819335938 " y="260.86958" x="894.05806" transform="rotate(-89.72708129882812 1343.1767578125002,579.3478393554688) "/>
+  <use data-wireframe="false" transform="rotate(89.77410125732422 2660.14501953125,590.2174072265625) " x="2210.14497" y="271.73915" data-xform="x=0 y=0 width=900 height=636.9564819335938 " data-ratiofixed="true" xlink:href="#svg_12" id="svg_35"/>
+  <use data-wireframe="false" x="43.47826" y="836.95654" data-xform="x=0 y=0 width=870 height=910.22998046875 " data-ratiofixed="true" xlink:href="#svg_36" id="svg_39"/>
+  <use data-wireframe="false" transform="rotate(-179.90713500976562 517.2359619140625,426.3794250488281) " x="37.23596" y="101.37945" data-xform="x=0 y=0 width=960 height=650 " data-ratiofixed="true" xlink:href="#svg_40" id="svg_44"/>
+  <use data-wireframe="false" transform="rotate(-89.72045135498047 1997.296875,565.5839843750001) " x="1517.29682" y="240.58403" data-xform="x=0 y=0 width=960 height=650 " data-ratiofixed="true" xlink:href="#svg_40" id="svg_4"/>
+ </g>
+ <g class="layer" data-color="#000000" data-speed="5" data-strength="58" data-repeat="1" data-height="3" data-zstep="0" data-diode="0" data-configName="PlywoodCut3mm" display="inline">
+  <title>#000000</title>
+  <filter id="filter#000000" filterUnits="objectBoundingBox" primitiveUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+   <feColorMatrix type="matrix" values="1 0 0 0 0, 0 1 0 0 0, 0 0 1 0 0, 0 0 0 1 0"/>
+  </filter>
+ </g>
+</svg>
