@@ -35,6 +35,6 @@ Files are provided to laser cut, it is sized to fit on sheets of A4 material.
 
 The enclousure to hold the components in place are 3D printed. 
 
-The whole design is also provided as a Fusion 360 file to edit accordingly.
+The graphics file is printed on paper, cut out and glued to the round 3D printed Dial section, this then slots into the servo.
 
 Created as part of work at the [Connected Environments Group at the Centre for Advanced Spatial Analysis](https://connected-environments.org/), University College London.
