@@ -28,7 +28,7 @@ pixels_pin = 28       # GPIO pin connected to the neopixel strip
 toplight_pin = 17     # GPIO pin connected to the top light neopixel
 
 # Brightness settings
-day_brightness = 1.0   # Full brightness during the day
+day_brightness = 0.5   # Reduced brightness during the day for subtlety
 night_brightness = 0.2 # 20% brightness during the night
 
 # --- Initialization ---
@@ -52,7 +52,9 @@ toplight = Neopixel(1, 1, toplight_pin, "RGBW")  # Initialize top light neopixel
 OFF = (0, 0, 0)              # Color for turning off neopixels
 WHITE = (255, 255, 255)      # White color
 BLUE = (0, 0, 255)           # Blue color
+LIGHT_BLUE = (0, 0, 128)     # Softer blue color for rain
 YELLOW = (249, 215, 28)      # Yellow color for sunlight
+SOFT_YELLOW = (125, 108, 14) # Softer yellow for subtle sunlight
 
 # --- Functions ---
 
@@ -70,12 +72,12 @@ def connect():
                 break
             max_wait -= 1
             print('Waiting for connection...')
-            time.sleep(1)
+            sleep(1)
 
         # Handle connection error
         if not wlan.isconnected():
             print('Network connection failed')
-            time.sleep(5)
+            sleep(5)
             connect()
         else:
             print('Connected')
@@ -102,8 +104,7 @@ def get_conditions():
     response = urequests.get(url)
     data = response.json()
     response.close()
-    print("Weather data received:", data)
-
+    print("Weather data received.")
     # Extract current weather conditions
     conditions = int(data["current"]["weather"][0]["id"])
     print("Current conditions ID:", conditions)
@@ -161,13 +162,13 @@ def move_servo_slowly(target_position):
         # Move servo upwards
         for pos in range(current_servo_position, target_position + 1, step):
             servo(pos)
-            time.sleep(delay)
+            sleep(delay)
             current_servo_position = pos
     elif current_servo_position > target_position:
         # Move servo downwards
         for pos in range(current_servo_position, target_position - 1, -step):
             servo(pos)
-            time.sleep(delay)
+            sleep(delay)
             current_servo_position = pos
     # If positions are equal, do nothing
 
@@ -179,102 +180,92 @@ def initial_servo_sweep():
     # Move to sun position
     print("Moving servo to sun position.")
     move_servo_slowly(sun_position)
-    time.sleep(5)  # Pause for 5 seconds
+    sleep(5)  # Pause for 5 seconds
     # Move to moon position
     print("Moving servo to moon position.")
     move_servo_slowly(moon_position)
-    time.sleep(5)  # Optional pause after reaching moon position
+    sleep(5)  # Optional pause after reaching moon position
 
 def sunny(duration_ms, start_time):
     """
-    Displays a sunny animation on the neopixel strip.
+    Displays a subtle sunny animation on the neopixel strip.
     """
     brightness = night_brightness if night else day_brightness
+    color = tuple(int(c * brightness) for c in SOFT_YELLOW)
     while time.ticks_diff(time.ticks_ms(), start_time) < duration_ms:
-        # Simulate sunlight with a pulsing yellow light
-        for cycle in range(3):  # Number of pulses
-            # Fade in
-            for i in range(0, 256, 5):
-                if time.ticks_diff(time.ticks_ms(), start_time) >= duration_ms:
-                    break
-                factor = i / 255 * brightness
-                r = int(YELLOW[0] * factor)
-                g = int(YELLOW[1] * factor)
-                b = int(YELLOW[2] * factor)
-                pixels.fill((r, g, b))
-                pixels.show()
-                time.sleep(0.02)
-            # Fade out
-            for i in range(255, -1, -5):
-                if time.ticks_diff(time.ticks_ms(), start_time) >= duration_ms:
-                    break
-                factor = i / 255 * brightness
-                r = int(YELLOW[0] * factor)
-                g = int(YELLOW[1] * factor)
-                b = int(YELLOW[2] * factor)
-                pixels.fill((r, g, b))
-                pixels.show()
-                time.sleep(0.02)
+        # Gentle pulsing effect
+        for i in range(0, 100, 2):  # Fade in
+            factor = i / 100
+            r = int(color[0] * factor)
+            g = int(color[1] * factor)
+            b = int(color[2] * factor)
+            pixels.fill((r, g, b))
+            pixels.show()
+            sleep(0.05)
+        for i in range(100, -1, -2):  # Fade out
+            factor = i / 100
+            r = int(color[0] * factor)
+            g = int(color[1] * factor)
+            b = int(color[2] * factor)
+            pixels.fill((r, g, b))
+            pixels.show()
+            sleep(0.05)
 
 def rain(duration_ms, start_time):
     """
-    Displays a rain animation on the neopixel strip.
+    Displays a subtle rain animation on the neopixel strip.
     """
     brightness = night_brightness if night else day_brightness
-    toplight.brightness(1.0)  # Top light at full brightness
-    toplight.set_pixel(0, (20, 20, 20, 0))  # Dim the top light slightly
-    toplight.show()
-    print("Top light dimmed for rain.")
+    # Use a softer blue color
+    color = tuple(int(c * brightness) for c in LIGHT_BLUE)
+    # Slow down the animation
+    drop_speed = 0.5  # Time between drops
     pixels.fill(OFF)
     pixels.show()
-    num_drops = 5  # Number of raindrops
+    num_drops = 2  # Fewer raindrops for subtlety
     raindrops = [{'position': random.randint(0, numpix - 1)} for _ in range(num_drops)]
 
     while time.ticks_diff(time.ticks_ms(), start_time) < duration_ms:
         pixels.fill(OFF)
         for drop in raindrops:
-            # Move drop down the strip
+            # Move drop down
             drop['position'] = (drop['position'] + 1) % numpix
-            pixels.set_pixel(drop['position'], (0, 0, int(255 * brightness)))
+            pixels.set_pixel(drop['position'], color)
         pixels.show()
-        time.sleep(0.1)
+        sleep(drop_speed)
 
 def thunderstorm(duration_ms, start_time):
     """
-    Displays a thunderstorm animation on the neopixel strip.
+    Displays a subtle thunderstorm animation on the neopixel strip.
     """
     brightness = night_brightness if night else day_brightness
+    # Use softer flashes and longer intervals
+    lightning_color = tuple(int(200 * brightness),) * 3
     while time.ticks_diff(time.ticks_ms(), start_time) < duration_ms:
         # Simulate rain
         rain_start_time = time.ticks_ms()
-        rain(500, rain_start_time)  # Rain for 0.5 seconds
+        rain(2000, rain_start_time)  # Rain for 2 seconds
         # Random chance of lightning
-        if random.randint(0, 10) > 7:
+        if random.randint(0, 10) > 8:
             # Lightning flash
-            pixels.fill((int(255 * brightness), int(255 * brightness), int(255 * brightness)))
+            pixels.fill(lightning_color)
             pixels.show()
-            time.sleep(0.1)
+            sleep(0.1)
             pixels.fill(OFF)
             pixels.show()
-            time.sleep(0.1)
-            # Possible additional flash
-            if random.choice([True, False]):
-                pixels.fill((int(255 * brightness), int(255 * brightness), int(255 * brightness)))
-                pixels.show()
-                time.sleep(0.05)
-                pixels.fill(OFF)
-                pixels.show()
+            sleep(random.uniform(0.5, 1.0))  # Longer interval before next flash
 
 def moving_clouds(duration_ms, start_time):
     """
-    Displays a moving clouds animation on the neopixel strip.
+    Displays a subtle moving clouds animation on the neopixel strip.
     """
     brightness = night_brightness if night else day_brightness
+    # Use softer gray colors
     cloud_colors = [
-        (int(30 * brightness), int(30 * brightness), int(30 * brightness)),
+        (int(20 * brightness), int(20 * brightness), int(20 * brightness)),
+        (int(40 * brightness), int(40 * brightness), int(40 * brightness)),
         (int(60 * brightness), int(60 * brightness), int(60 * brightness)),
-        (int(90 * brightness), int(90 * brightness), int(90 * brightness)),
-        (int(60 * brightness), int(60 * brightness), int(60 * brightness))
+        (int(40 * brightness), int(40 * brightness), int(40 * brightness))
     ]
     while time.ticks_diff(time.ticks_ms(), start_time) < duration_ms:
         for shift in range(numpix):
@@ -284,38 +275,37 @@ def moving_clouds(duration_ms, start_time):
                 color = cloud_colors[(i + shift) % len(cloud_colors)]
                 pixels.set_pixel(i, color)
             pixels.show()
-            time.sleep(0.2)
+            sleep(0.5)  # Slow down the movement
 
 def snow(duration_ms, start_time):
     """
-    Displays a snow animation on the neopixel strip.
+    Displays a subtle snow animation on the neopixel strip.
     """
     brightness = night_brightness if night else day_brightness
     pixels.fill(OFF)
     pixels.show()
-    snowflakes = [{'position': random.randint(0, numpix - 1)} for _ in range(5)]  # Number of snowflakes
+    num_flakes = 2  # Fewer snowflakes for subtlety
+    snowflakes = [{'position': random.randint(0, numpix - 1)} for _ in range(num_flakes)]
 
     while time.ticks_diff(time.ticks_ms(), start_time) < duration_ms:
         pixels.fill(OFF)
         for flake in snowflakes:
-            # Move snowflake down the strip
-            flake['position'] = (flake['position'] + 1) % numpix
-            flake_brightness = random.randint(50, 150) * brightness
-            pixels.set_pixel(
-                flake['position'],
-                (int(flake_brightness), int(flake_brightness), int(flake_brightness))
-            )
+            # Move flake down slowly
+            if random.choice([True, False]):  # Move flake every other cycle
+                flake['position'] = (flake['position'] + 1) % numpix
+            flake_brightness = int(150 * brightness)
+            pixels.set_pixel(flake['position'], (flake_brightness,) * 3)
         pixels.show()
-        time.sleep(0.3)
+        sleep(0.7)  # Slow down the animation
 
 def clear_night(duration_ms, start_time):
     """
-    Displays a clear night (twinkling stars) animation on the neopixel strip.
+    Displays a subtle clear night (twinkling stars) animation on the neopixel strip.
     """
     brightness = night_brightness
     pixels.fill(OFF)
     pixels.show()
-    num_stars = numpix // 2  # Number of stars
+    num_stars = numpix // 3  # Fewer stars for subtlety
 
     # Generate unique random positions for stars
     star_positions = []
@@ -324,16 +314,16 @@ def clear_night(duration_ms, start_time):
         if pos not in star_positions:
             star_positions.append(pos)
 
-    star_brightness = [random.randint(10, 50) for _ in range(num_stars)]
+    star_brightness = [random.randint(10, 30) for _ in range(num_stars)]
     star_directions = [random.choice([-1, 1]) for _ in range(num_stars)]
     
     while time.ticks_diff(time.ticks_ms(), start_time) < duration_ms:
         for i, pos in enumerate(star_positions):
             # Update brightness
-            star_brightness[i] += star_directions[i] * random.randint(1, 3)
+            star_brightness[i] += star_directions[i] * random.randint(1, 2)
             # Reverse direction if limits are reached
-            if star_brightness[i] >= 50:
-                star_brightness[i] = 50
+            if star_brightness[i] >= 30:
+                star_brightness[i] = 30
                 star_directions[i] = -1
             elif star_brightness[i] <= 10:
                 star_brightness[i] = 10
@@ -342,7 +332,7 @@ def clear_night(duration_ms, start_time):
             b = int(star_brightness[i] * brightness)
             pixels.set_pixel(pos, (b, b, b))
         pixels.show()
-        time.sleep(0.5)  # Slow update rate
+        sleep(1.0)  # Slow down the twinkling
 
 def move():
     """
@@ -404,7 +394,7 @@ def move():
         print("No matching weather conditions found.")
         # Wait for the duration before checking again
         while time.ticks_diff(time.ticks_ms(), start_time) < animation_duration_ms:
-            time.sleep(1)
+            sleep(1)
 
 # --- Main Program ---
 
