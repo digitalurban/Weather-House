@@ -200,6 +200,7 @@ def snow(duration_ms, start_time):
         sleep(0.8)
 
 # Movement and Lighting
+
 def move():
     global last_condition, first_weather_check
     animation_duration_ms = 900000  # 15 minutes
@@ -215,6 +216,9 @@ def move():
                 sunny(animation_duration_ms, start_time)
         elif conditions in scatteredclouds:
             move_servo_slowly(130)
+            scattered_clouds(animation_duration_ms, start_time)
+        elif conditions in cloudy:  # Add handling for cloudy (804)
+            move_servo_slowly(115)
             scattered_clouds(animation_duration_ms, start_time)
         elif conditions in showers or conditions in lightrain:
             move_servo_slowly(105)
@@ -236,7 +240,6 @@ def move():
         first_weather_check = False
     else:
         print("Condition unchanged, skipping movement.")
-
 # Servo Movement
 def move_servo_slowly(target_position):
     global current_servo_position
