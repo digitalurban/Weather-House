@@ -100,38 +100,40 @@ def iconlight():
     print("Top light toggled on.")
 
 def get_conditions():
-    """Fetch weather conditions from OpenWeatherMap and wait for 15 minutes before the next check."""
+    """Fetch weather conditions from OpenWeatherMap."""
     global conditions, night, last_weather_check
 
-    # Wait for 15 minutes before the next weather check
-    if last_weather_check != 0:
-        time_since_last_check = ticks_diff(ticks_ms(), last_weather_check)
-        if time_since_last_check < weather_check_interval:
-            print("Pausing for 15 minutes...")
-            sleep((weather_check_interval - time_since_last_check) / 1000)  # Wait the remaining time
+    current_time = ticks_ms()
 
-    print("Getting Data from OpenWeatherMap...")
-    try:
-        # Fetch weather data
-        url = f"https://api.openweathermap.org/data/3.0/onecall?lat={lat}&lon={lon}&appid={api_key}&units=metric"
-        response = urequests.get(url)
-        data = response.json()
-        response.close()
+    # If this is the first check or 15 minutes have passed, fetch weather
+    if last_weather_check == 0 or ticks_diff(current_time, last_weather_check) >= weather_check_interval:
+        print("Getting Data from OpenWeatherMap...")
+        try:
+            # Fetch weather data from the API
+            url = f"https://api.openweathermap.org/data/3.0/onecall?lat={lat}&lon={lon}&appid={api_key}&units=metric"
+            response = urequests.get(url)
+            data = response.json()
+            response.close()
 
-        # Update conditions and time of day
-        conditions = int(data["current"]["weather"][0]["id"])
-        current_time = data["current"]["dt"]
-        sunrise = data["current"]["sunrise"]
-        sunset = data["current"]["sunset"]
-        night = current_time >= sunset or current_time <= sunrise
+            # Update weather conditions and night status
+            conditions = int(data["current"]["weather"][0]["id"])
+            current_time = data["current"]["dt"]
+            sunrise = data["current"]["sunrise"]
+            sunset = data["current"]["sunset"]
+            night = current_time >= sunset or current_time <= sunrise
 
-        # Update the last weather check timestamp
-        last_weather_check = ticks_ms()
+            # Update the last weather check timestamp
+            last_weather_check = ticks_ms()
 
-        print(f"Weather conditions updated: {conditions}, Night: {night}")
-    except Exception as e:
-        print(f"Failed to fetch weather data: {e}")
-
+            print(f"Weather conditions updated: {conditions}, Night: {night}")
+        except Exception as e:
+            print(f"Failed to fetch weather data: {e}")
+    else:
+        # Calculate the time remaining until the next update
+        time_remaining = weather_check_interval - ticks_diff(current_time, last_weather_check)
+        time_remaining_minutes = time_remaining // 60000  # Convert to minutes for display
+        print(f"Pausing for {time_remaining_minutes} minutes...")
+        sleep(time_remaining / 1000)
 
 # Ambient Lighting for Weather Conditions
 def sunny(duration_ms, start_time):
@@ -275,11 +277,7 @@ initial_servo_sweep()
 try:
     while True:
         if connect():
-            if last_weather_check == 0 or ticks_diff(ticks_ms(), last_weather_check) >= weather_check_interval:
-                iconlight()  # Toggle top light during weather update
-                get_conditions()
-            move()
-        sleep(30)  # Prevent CPU overload by adding a brief pause
+            get_conditions()  # Fetch weather conditions
+            move()            # Update servo position and lights based on conditions
 except KeyboardInterrupt:
     print("Program stopped.")
-
