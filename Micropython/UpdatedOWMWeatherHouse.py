@@ -121,40 +121,7 @@ def get_conditions():
     else:
         print("Skipping weather update, not yet 15 minutes.")
 
-def move_servo_slowly(target_position):
-    """Move the servo to the target position slowly."""
-    global current_servo_position
-    step = 1
-    delay = servospeed
-    target_position = max(0, min(180, target_position))
-    if current_servo_position < target_position:
-        for pos in range(current_servo_position, target_position + 1, step):
-            servo(pos)
-            sleep(delay)
-            current_servo_position = pos
-    elif current_servo_position > target_position:
-        for pos in range(current_servo_position, target_position - 1, -step):
-            servo(pos)
-            sleep(delay)
-            current_servo_position = pos
-
-def servo(degrees):
-    """Move the servo to a specific angle."""
-    degrees = max(0, min(180, degrees + servo_offset))
-    maxDuty = 1000
-    minDuty = 9000
-    newDuty = int(minDuty + (maxDuty - minDuty) * (degrees / 180))
-    servoPin.duty_u16(newDuty)
-
-def initial_servo_sweep():
-    """Perform an initial sweep of the servo to set starting positions."""
-    print("Performing initial servo sweep...")
-    move_servo_slowly(sun_position)
-    sleep(5)
-    move_servo_slowly(moon_position)
-    sleep(5)
-
-# Ambient Animations for Each Weather Condition
+# Ambient Lighting for Weather Conditions
 def sunny(duration_ms, start_time):
     brightness = night_brightness if night else day_brightness
     while ticks_diff(ticks_ms(), start_time) < duration_ms:
@@ -162,10 +129,19 @@ def sunny(duration_ms, start_time):
         pixels.show()
         sleep(1)
 
+def moonlight(duration_ms, start_time):
+    brightness = night_brightness
+    moon_color = (int(150 * brightness), int(150 * brightness), int(255 * brightness))
+    while ticks_diff(ticks_ms(), start_time) < duration_ms:
+        pixels.fill(moon_color)
+        pixels.show()
+        sleep(1.0)
+
 def scattered_clouds(duration_ms, start_time):
     brightness = night_brightness if night else day_brightness
+    cloud_color = (int(SOFT_GRAY[0] * brightness), int(SOFT_GRAY[1] * brightness), int(SOFT_GRAY[2] * brightness))
     while ticks_diff(ticks_ms(), start_time) < duration_ms:
-        pixels.fill((int(SOFT_GRAY[0] * brightness), int(SOFT_GRAY[1] * brightness), int(SOFT_GRAY[2] * brightness)))
+        pixels.fill(cloud_color)
         pixels.show()
         sleep(0.5)
 
@@ -182,7 +158,6 @@ def rain(duration_ms, start_time):
         sleep(0.7)
 
 def thunderstorm(duration_ms, start_time):
-    brightness = night_brightness if night else day_brightness
     rain(duration_ms, start_time)
     if random.randint(0, 10) > 8:
         pixels.fill(WHITE)
@@ -192,7 +167,7 @@ def thunderstorm(duration_ms, start_time):
         pixels.show()
 
 def fog_light(duration_ms, start_time):
-    brightness = night_brightness if night else day_brightness
+    brightness = night_brightness
     fog_color = (int(50 * brightness), int(50 * brightness), int(50 * brightness))
     while ticks_diff(ticks_ms(), start_time) < duration_ms:
         pixels.fill(fog_color)
@@ -200,7 +175,7 @@ def fog_light(duration_ms, start_time):
         sleep(1.0)
 
 def snow(duration_ms, start_time):
-    brightness = night_brightness if night else day_brightness
+    brightness = night_brightness
     snowflakes = [{'position': random.randint(0, numpix - 1)} for _ in range(2)]
     while ticks_diff(ticks_ms(), start_time) < duration_ms:
         pixels.fill(OFF)
@@ -210,17 +185,20 @@ def snow(duration_ms, start_time):
         pixels.show()
         sleep(0.8)
 
-# Movement Based on Conditions
+# Movement and Lighting
 def move():
-    """Handle weather conditions and ambient animations."""
     global last_condition, first_weather_check
-    animation_duration_ms = 900000
+    animation_duration_ms = 900000  # 15 minutes
     start_time = ticks_ms()
 
     if first_weather_check or last_condition != conditions:
         if conditions in sunny_codes:
-            move_servo_slowly(sun_position)
-            sunny(animation_duration_ms, start_time)
+            if night:
+                move_servo_slowly(moon_position)
+                moonlight(animation_duration_ms, start_time)
+            else:
+                move_servo_slowly(sun_position)
+                sunny(animation_duration_ms, start_time)
         elif conditions in scatteredclouds:
             move_servo_slowly(130)
             scattered_clouds(animation_duration_ms, start_time)
@@ -245,6 +223,40 @@ def move():
     else:
         print("Condition unchanged, skipping movement.")
 
+# Servo Movement
+def move_servo_slowly(target_position):
+    global current_servo_position
+    step = 1
+    delay = servospeed
+    target_position = max(0, min(180, target_position))
+    if current_servo_position < target_position:
+        for pos in range(current_servo_position, target_position + 1, step):
+            servo(pos)
+            sleep(delay)
+            current_servo_position = pos
+    elif current_servo_position > target_position:
+        for pos in range(current_servo_position, target_position - 1, -step):
+            servo(pos)
+            sleep(delay)
+            current_servo_position = pos
+
+def servo(degrees):
+    """Move the servo to a specific angle."""
+    degrees = max(0, min(180, degrees + servo_offset))
+    maxDuty = 1000
+    minDuty = 9000
+    newDuty = int(minDuty + (maxDuty - minDuty) * (degrees / 180))
+    servoPin.duty_u16(newDuty)
+
+# Initial Servo Sweep
+def initial_servo_sweep():
+    """Perform an initial sweep of the servo to set starting positions."""
+    print("Performing initial servo sweep...")
+    move_servo_slowly(sun_position)
+    sleep(5)
+    move_servo_slowly(moon_position)
+    sleep(5)
+
 # Main Program
 initial_servo_sweep()
 
@@ -255,6 +267,7 @@ try:
                 iconlight()  # Toggle top light during weather update
                 get_conditions()
             move()
-        sleep(30)
+        sleep(30)  # Prevent CPU overload by adding a brief pause
 except KeyboardInterrupt:
     print("Program stopped.")
+
