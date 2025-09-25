@@ -1,3 +1,10 @@
+# Final Version: 25th September 2025
+# This script controls a servo-based weather house with Neopixel lighting.
+# It fetches real-time weather data from the Open-Meteo API, determines
+# the weather condition, and moves a servo to a pre-calibrated position
+# to display the correct physical symbol. It also triggers a corresponding
+# light effect on a Neopixel LED strip and turns on a top light at night.
+
 import time
 import network
 import urequests
@@ -7,14 +14,14 @@ import random
 from time import sleep, ticks_ms, ticks_diff
 import ujson
 
-# --- Configuration ---
-ssid = 'YourSSID'      # Your Wi-Fi SSID
-password = 'YourPassword'  # Your Wi-Fi password
-lat = "52.629238" # Update for location
-lon = "0.492520" # Update for location
+# --- Network Configuration ---
+ssid = ''      # Your Wi-Fi SSID
+password = ''  # Your Wi-Fi password
+lat = "52.629238"            # Your latitude
+lon = "0.492520"             # Your longitude
 
 # --- Calibrated Servo Positions ---
-# Your custom values have been added here.
+# These are your final, tweaked positions.
 servospeed = 0.02
 servo_offset = 0
 
@@ -27,27 +34,31 @@ FOG_POS = 113
 SLIGHT_RAIN_POS = 90
 RAIN_SHOWERS_POS = 75
 MODERATE_RAIN_POS = 95
-HEAVY_RAIN_POS = 95          # NOTE: This value was missing, I've set it to 85.
+HEAVY_RAIN_POS = 95
 RAIN_NIGHT_POS = 150
 THUNDERSTORM_POS = 50
 SNOW_POS = 135
 
-# --- Neopixel Configuration ---
+# --- Neopixel LED Configuration ---
 numpix = 10
 pixels_pin = 28
 pixels = Neopixel(numpix, 0, pixels_pin, "GRB")
+# ADDED: Top light initialization as per your spec
+toplight = Neopixel(1, 1, 17, "RGBW")
+NIGHT_LIGHT_COLOR = (50, 50, 50, 50) # A warm white for the top light
+
 day_brightness = 0.5
 night_brightness = 0.2
 
-# --- Weather Configuration ---
-weather_check_interval = 5 * 60 * 1000  # 5 minutes
+# --- Weather Update Configuration ---
+weather_check_interval = 5 * 60 * 1000  # 5 minutes in milliseconds
 last_weather_check = 0
 conditions = 0
 night = False
 last_condition = None
 first_weather_check = True
 
-# --- Weather Condition Mapping ---
+# --- WMO Weather Code Mapping (for Open-Meteo API) ---
 WMO_CODES = {
     0: "Clear sky", 1: "Mainly clear", 2: "Partly cloudy", 3: "Overcast", 45: "Fog", 48: "Rime fog",
     51: "Light drizzle", 53: "Drizzle", 55: "Dense drizzle", 61: "Slight rain", 63: "Rain", 65: "Heavy rain",
@@ -55,7 +66,7 @@ WMO_CODES = {
     71: "Slight snow", 73: "Snow", 75: "Heavy snow", 85: "Slight snow showers", 86: "Heavy snow showers"
 }
 
-# Define lists for your categories
+# Define lists to categorize WMO codes
 clear_sky = [0, 1]
 partly_cloudy = [2]
 overcast = [3]
@@ -68,7 +79,7 @@ thunderstorm = [95, 96, 99]
 snow = [71, 73, 75, 85, 86]
 all_rain_types = slight_rain + rain_showers + moderate_rain + heavy_rain
 
-# --- Initialization ---
+# --- Hardware Initialization ---
 servoPin = PWM(Pin(16))
 servoPin.freq(50)
 wlan = network.WLAN(network.STA_IF)
@@ -77,6 +88,7 @@ current_servo_position = 90 # Start at a neutral position
 
 # --- Helper Functions ---
 def connect():
+    """Establishes a connection to the Wi-Fi network."""
     if not wlan.isconnected():
         print("Attempting to connect to Wi-Fi...")
         wlan.connect(ssid, password)
@@ -90,6 +102,7 @@ def connect():
     return True
 
 def get_conditions():
+    """Fetches weather data from the Open-Meteo API and controls the night light."""
     global conditions, night, last_weather_check
     current_time_ms = ticks_ms()
     if last_weather_check == 0 or ticks_diff(current_time_ms, last_weather_check) >= weather_check_interval:
@@ -102,21 +115,29 @@ def get_conditions():
             current_weather_data = data["current_weather"]
             conditions = int(current_weather_data["weathercode"])
             night = current_weather_data["is_day"] == 0
+            
+            # --- ADDED: Top light control ---
+            if night:
+                toplight.set_pixel(0, NIGHT_LIGHT_COLOR)
+            else:
+                toplight.set_pixel(0, (0, 0, 0, 0)) # Off
+            toplight.show()
+            
             condition_text = WMO_CODES.get(conditions, "Unknown")
             print(f"Weather updated: {condition_text} ({conditions}), Night: {night}")
             last_weather_check = ticks_ms()
         except Exception as e:
             print(f"Failed to fetch weather data: {e}")
 
-# --- Ambient Lighting Effects ---
-def clear_day_effect(duration_ms, start_time):
+# --- Ambient Lighting Effects (Unchanged) ---
+def clear_day_effect(duration_ms, start_time, **kwargs):
     brightness = day_brightness
     while ticks_diff(ticks_ms(), start_time) < duration_ms:
         pixels.fill((int(249 * brightness), int(215 * brightness), int(28 * brightness)))
         pixels.show()
         sleep(1)
 
-def clear_night_effect(duration_ms, start_time):
+def clear_night_effect(duration_ms, start_time, **kwargs):
     brightness = night_brightness
     moon_color = (int(150 * brightness), int(150 * brightness), int(255 * brightness))
     while ticks_diff(ticks_ms(), start_time) < duration_ms:
@@ -124,7 +145,7 @@ def clear_night_effect(duration_ms, start_time):
         pixels.show()
         sleep(1.0)
 
-def clouds_effect(duration_ms, start_time):
+def clouds_effect(duration_ms, start_time, **kwargs):
     brightness = night_brightness if night else day_brightness
     cloud_color = (int(30 * brightness), int(30 * brightness), int(30 * brightness))
     while ticks_diff(ticks_ms(), start_time) < duration_ms:
@@ -132,7 +153,7 @@ def clouds_effect(duration_ms, start_time):
         pixels.show()
         sleep(0.5)
 
-def rain_effect(duration_ms, start_time, speed=0.7):
+def rain_effect(duration_ms, start_time, speed=0.7, **kwargs):
     brightness = night_brightness if night else day_brightness
     num_drops = 2
     raindrops = [{'position': random.randint(0, numpix - 1)} for _ in range(num_drops)]
@@ -144,7 +165,7 @@ def rain_effect(duration_ms, start_time, speed=0.7):
         pixels.show()
         sleep(speed)
 
-def thunderstorm_effect(duration_ms, start_time):
+def thunderstorm_effect(duration_ms, start_time, **kwargs):
     start = ticks_ms()
     while ticks_diff(ticks_ms(), start) < duration_ms:
         rain_effect(1000, ticks_ms(), speed=0.4)
@@ -155,7 +176,7 @@ def thunderstorm_effect(duration_ms, start_time):
             pixels.fill((0, 0, 0))
             pixels.show()
 
-def fog_effect(duration_ms, start_time):
+def fog_effect(duration_ms, start_time, **kwargs):
     brightness = night_brightness if night else 0.3
     fog_color = (int(80 * brightness), int(80 * brightness), int(80 * brightness))
     while ticks_diff(ticks_ms(), start_time) < duration_ms:
@@ -163,7 +184,7 @@ def fog_effect(duration_ms, start_time):
         pixels.show()
         sleep(1.0)
 
-def snow_effect(duration_ms, start_time):
+def snow_effect(duration_ms, start_time, **kwargs):
     brightness = night_brightness if night else day_brightness
     snow_color = (int(255*brightness), int(255*brightness), int(255*brightness))
     snowflakes = [{'position': random.randint(0, numpix - 1)} for _ in range(2)]
@@ -177,6 +198,7 @@ def snow_effect(duration_ms, start_time):
 
 # --- Core Logic ---
 def move():
+    """Determines the correct servo position and light effect, then executes them."""
     global last_condition, first_weather_check
     animation_duration_ms = weather_check_interval
     if first_weather_check or last_condition != conditions:
@@ -187,7 +209,6 @@ def move():
         effect_func = None
         effect_params = {}
 
-        # --- NEW LOGIC: Determine position and effect based on condition and time of day ---
         if night:
             if conditions in clear_sky:
                 target_pos = CLEAR_NIGHT_POS
@@ -199,7 +220,6 @@ def move():
                 target_pos = RAIN_NIGHT_POS
                 effect_func = rain_effect
         
-        # If it's day, or no specific night position was found, use day positions
         if target_pos is None:
             if conditions in clear_sky:
                 target_pos = CLEAR_DAY_POS
@@ -236,7 +256,6 @@ def move():
                 target_pos = SNOW_POS
                 effect_func = snow_effect
 
-        # Execute the move and animation
         if target_pos is not None and effect_func is not None:
             move_servo_slowly(target_pos)
             effect_func(animation_duration_ms, start_time, **effect_params)
@@ -252,6 +271,7 @@ def move():
         sleep(weather_check_interval / 1000)
 
 def move_servo_slowly(target_position):
+    """Moves the servo smoothly from its current to a target position."""
     global current_servo_position
     step = 1 if target_position > current_servo_position else -1
     for pos in range(current_servo_position, target_position + step, step):
@@ -260,6 +280,7 @@ def move_servo_slowly(target_position):
     current_servo_position = target_position
 
 def servo(degrees):
+    """Converts degrees to a PWM duty cycle and moves the servo."""
     degrees = max(0, min(180, degrees + servo_offset))
     min_pulse_us = 500
     max_pulse_us = 2500
@@ -267,6 +288,7 @@ def servo(degrees):
     servoPin.duty_u16(duty)
 
 def initial_servo_sweep():
+    """Performs your tweaked servo sweep at startup."""
     print("Performing initial servo sweep...")
     move_servo_slowly(22)
     sleep(2)
@@ -285,7 +307,9 @@ try:
             print("Wi-Fi disconnected. Will try again in 1 minute.")
             sleep(60)
 except KeyboardInterrupt:
-    print("Program stopped.")
+    print("Program stopped by user.")
     pixels.fill((0, 0, 0))
     pixels.show()
+    toplight.set_pixel(0, (0,0,0,0)) # Turn off top light on exit
+    toplight.show()
 
