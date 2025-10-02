@@ -1,9 +1,6 @@
-# Final Version: 25th September 2025
-# This script controls a servo-based weather house with Neopixel lighting.
-# It fetches real-time weather data from the Open-Meteo API, determines
-# the weather condition, and moves a servo to a pre-calibrated position
-# to display the correct physical symbol. It also triggers a corresponding
-# light effect on a Neopixel LED strip and turns on a top light at night.
+# Final Version: 26th September 2025
+# This version ensures the light animation runs continuously and uses a
+# simplified day/night brightness control for the main LEDs.
 
 import time
 import network
@@ -13,18 +10,17 @@ from neopixel import Neopixel
 import random
 from time import sleep, ticks_ms, ticks_diff
 import ujson
+import math
 
 # --- Network Configuration ---
-ssid = ''      # Your Wi-Fi SSID
-password = ''  # Your Wi-Fi password
-lat = "52.629238"            # Your latitude
-lon = "0.492520"             # Your longitude
+ssid = '' #Your Wifi ID
+password = '' #Password
+lat = "52.629238" #Your Latitude
+lon = "0.492520" #Your Longitude 
 
 # --- Calibrated Servo Positions ---
-# These are your final, tweaked positions.
 servospeed = 0.02
 servo_offset = 0
-
 CLEAR_DAY_POS = 22
 CLEAR_NIGHT_POS = 2
 PARTLY_CLOUDY_POS = 45
@@ -43,22 +39,22 @@ SNOW_POS = 135
 numpix = 10
 pixels_pin = 28
 pixels = Neopixel(numpix, 0, pixels_pin, "GRB")
-# ADDED: Top light initialization as per your spec
 toplight = Neopixel(1, 1, 17, "RGBW")
-NIGHT_LIGHT_COLOR = (50, 50, 50, 50) # A warm white for the top light
-
-day_brightness = 0.5
-night_brightness = 0.2
+NIGHT_LIGHT_COLOR = (50, 50, 50, 50)
+day_brightness = 0.2 # Set from 0.0 (off) to 1.0 (full brightness)
+night_brightness = 0.2 # Set from 0.0 (off) to 1.0 (full brightness)
+current_led_color = (0, 0, 0)
 
 # --- Weather Update Configuration ---
-weather_check_interval = 5 * 60 * 1000  # 5 minutes in milliseconds
+weather_check_interval = 5 * 60 * 1000
 last_weather_check = 0
 conditions = 0
 night = False
 last_condition = None
 first_weather_check = True
+last_night_status = None
 
-# --- WMO Weather Code Mapping (for Open-Meteo API) ---
+# --- WMO Weather Code Mapping ---
 WMO_CODES = {
     0: "Clear sky", 1: "Mainly clear", 2: "Partly cloudy", 3: "Overcast", 45: "Fog", 48: "Rime fog",
     51: "Light drizzle", 53: "Drizzle", 55: "Dense drizzle", 61: "Slight rain", 63: "Rain", 65: "Heavy rain",
@@ -66,7 +62,6 @@ WMO_CODES = {
     71: "Slight snow", 73: "Snow", 75: "Heavy snow", 85: "Slight snow showers", 86: "Heavy snow showers"
 }
 
-# Define lists to categorize WMO codes
 clear_sky = [0, 1]
 partly_cloudy = [2]
 overcast = [3]
@@ -84,11 +79,10 @@ servoPin = PWM(Pin(16))
 servoPin.freq(50)
 wlan = network.WLAN(network.STA_IF)
 wlan.active(True)
-current_servo_position = 90 # Start at a neutral position
+current_servo_position = 90
 
 # --- Helper Functions ---
 def connect():
-    """Establishes a connection to the Wi-Fi network."""
     if not wlan.isconnected():
         print("Attempting to connect to Wi-Fi...")
         wlan.connect(ssid, password)
@@ -102,7 +96,6 @@ def connect():
     return True
 
 def get_conditions():
-    """Fetches weather data from the Open-Meteo API and controls the night light."""
     global conditions, night, last_weather_check
     current_time_ms = ticks_ms()
     if last_weather_check == 0 or ticks_diff(current_time_ms, last_weather_check) >= weather_check_interval:
@@ -116,11 +109,10 @@ def get_conditions():
             conditions = int(current_weather_data["weathercode"])
             night = current_weather_data["is_day"] == 0
             
-            # --- ADDED: Top light control ---
             if night:
                 toplight.set_pixel(0, NIGHT_LIGHT_COLOR)
             else:
-                toplight.set_pixel(0, (0, 0, 0, 0)) # Off
+                toplight.set_pixel(0, (0, 0, 0, 0))
             toplight.show()
             
             condition_text = WMO_CODES.get(conditions, "Unknown")
@@ -129,149 +121,154 @@ def get_conditions():
         except Exception as e:
             print(f"Failed to fetch weather data: {e}")
 
-# --- Ambient Lighting Effects (Unchanged) ---
-def clear_day_effect(duration_ms, start_time, **kwargs):
-    brightness = day_brightness
-    while ticks_diff(ticks_ms(), start_time) < duration_ms:
-        pixels.fill((int(249 * brightness), int(215 * brightness), int(28 * brightness)))
+# --- Fade & Lighting Effects ---
+def fade_to_color(target_color, duration_ms=500):
+    global current_led_color
+    steps = 50
+    delay = duration_ms / steps
+    start_color = current_led_color
+    for i in range(steps + 1):
+        r = int(start_color[0] + (target_color[0] - start_color[0]) * (i / steps))
+        g = int(start_color[1] + (target_color[1] - start_color[1]) * (i / steps))
+        b = int(start_color[2] + (target_color[2] - start_color[2]) * (i / steps))
+        intermediate_color = (r, g, b)
+        pixels.fill(intermediate_color)
         pixels.show()
+        sleep(delay / 1000)
+    current_led_color = target_color
+
+def clear_day_effect(duration_ms, start_time, **kwargs):
+    b = day_brightness
+    target_color = (int(249 * b), int(215 * b), int(28 * b))
+    fade_to_color(target_color)
+    while ticks_diff(ticks_ms(), start_time) < duration_ms:
         sleep(1)
 
 def clear_night_effect(duration_ms, start_time, **kwargs):
-    brightness = night_brightness
-    moon_color = (int(150 * brightness), int(150 * brightness), int(255 * brightness))
+    b = night_brightness
+    target_color = (int(150 * b), int(150 * b), int(255 * b))
+    fade_to_color(target_color)
     while ticks_diff(ticks_ms(), start_time) < duration_ms:
-        pixels.fill(moon_color)
-        pixels.show()
         sleep(1.0)
 
 def clouds_effect(duration_ms, start_time, **kwargs):
-    brightness = night_brightness if night else day_brightness
-    cloud_color = (int(30 * brightness), int(30 * brightness), int(30 * brightness))
+    b = night_brightness if night else day_brightness
+    target_color = (int(30 * b), int(30 * b), int(30 * b))
+    fade_to_color(target_color)
     while ticks_diff(ticks_ms(), start_time) < duration_ms:
-        pixels.fill(cloud_color)
-        pixels.show()
         sleep(0.5)
 
-def rain_effect(duration_ms, start_time, speed=0.7, **kwargs):
-    brightness = night_brightness if night else day_brightness
-    num_drops = 2
-    raindrops = [{'position': random.randint(0, numpix - 1)} for _ in range(num_drops)]
-    while ticks_diff(ticks_ms(), start_time) < duration_ms:
-        pixels.fill((0, 0, 0))
-        for drop in raindrops:
-            drop['position'] = (drop['position'] + 1) % numpix
-            pixels.set_pixel(drop['position'], (0, 0, int(128 * brightness)))
+def rain_effect(duration_ms, start_time, speed=0.1, **kwargs):
+    global current_led_color
+    splashes = []
+    led_brightness = [0.0] * numpix
+    start = ticks_ms()
+    while ticks_diff(ticks_ms(), start) < duration_ms:
+        for i in range(numpix): led_brightness[i] *= 0.95
+        if random.random() < speed:
+            splashes.append({"position": random.uniform(0, numpix - 1), "brightness": 1.0})
+        for i in range(len(splashes) - 1, -1, -1):
+            if splashes[i]["brightness"] < 0.01: splashes.pop(i)
+            else: splashes[i]["brightness"] *= 0.9
+        new_brightness = [0.0] * numpix
+        for splash in splashes:
+            for i in range(numpix):
+                dist = abs(splash["position"] - i)
+                b_splash = math.exp(-(dist * dist) / (2 * 1.5 * 1.5)) * splash["brightness"]
+                new_brightness[i] += b_splash
+        for i in range(numpix):
+            b = max(led_brightness[i], new_brightness[i])
+            led_brightness[i] = b
+            final_b = b * (night_brightness if night else day_brightness)
+            if final_b > 0.05: pixels.set_pixel(i, (int(10*final_b), int(50*final_b), int(255*final_b)))
+            else: pixels.set_pixel(i, (0, 0, 0))
         pixels.show()
-        sleep(speed)
+        sleep(0.02)
+    current_led_color = (0, 0, 0)
 
 def thunderstorm_effect(duration_ms, start_time, **kwargs):
     start = ticks_ms()
     while ticks_diff(ticks_ms(), start) < duration_ms:
-        rain_effect(1000, ticks_ms(), speed=0.4)
+        rain_effect(1000, ticks_ms(), speed=0.5)
         if random.randint(0, 10) > 8:
-            pixels.fill((255, 255, 255))
-            pixels.show()
-            sleep(0.1)
-            pixels.fill((0, 0, 0))
-            pixels.show()
+            # Lightning flash is always full brightness for impact
+            pixels.fill((200, 200, 255)); pixels.show(); sleep(0.05)
+            pixels.fill((0,0,0)); pixels.show(); sleep(0.05)
 
 def fog_effect(duration_ms, start_time, **kwargs):
-    brightness = night_brightness if night else 0.3
-    fog_color = (int(80 * brightness), int(80 * brightness), int(80 * brightness))
+    b = (night_brightness if night else 0.3) * (day_brightness) # Fog is dimmer in day
+    target_color = (int(80 * b), int(80 * b), int(80 * b))
+    fade_to_color(target_color)
     while ticks_diff(ticks_ms(), start_time) < duration_ms:
-        pixels.fill(fog_color)
-        pixels.show()
         sleep(1.0)
 
 def snow_effect(duration_ms, start_time, **kwargs):
-    brightness = night_brightness if night else day_brightness
-    snow_color = (int(255*brightness), int(255*brightness), int(255*brightness))
-    snowflakes = [{'position': random.randint(0, numpix - 1)} for _ in range(2)]
-    while ticks_diff(ticks_ms(), start_time) < duration_ms:
+    b = night_brightness if night else day_brightness
+    snow_color = (int(255*b), int(255*b), int(255*b))
+    snowflakes = [{'p': random.uniform(0,numpix-1),'s':random.uniform(0.02,0.05)} for _ in range(4)]
+    start = ticks_ms()
+    while ticks_diff(ticks_ms(), start) < duration_ms:
         pixels.fill((0, 0, 0))
         for flake in snowflakes:
-            flake['position'] = (flake['position'] + 1) % numpix
-            pixels.set_pixel(flake['position'], snow_color)
+            flake['p'] += flake['s']
+            if flake['p'] > numpix: flake['p'] = 0
+            pixels.set_pixel(int(flake['p']), snow_color)
         pixels.show()
-        sleep(0.8)
+        sleep(0.05)
 
-# --- Core Logic ---
-def move():
-    """Determines the correct servo position and light effect, then executes them."""
-    global last_condition, first_weather_check
-    animation_duration_ms = weather_check_interval
-    if first_weather_check or last_condition != conditions:
-        print(f"New weather condition detected. Updating display.")
-        start_time = ticks_ms()
-        
-        target_pos = None
-        effect_func = None
-        effect_params = {}
+# --- REFACTORED Core Logic ---
+def run_display_cycle():
+    global last_condition, first_weather_check, last_night_status
+    action_key = None
+    if night:
+        if conditions in clear_sky: action_key = "clear_night"
+        elif conditions in partly_cloudy: action_key = "partly_cloudy_night"
+        elif conditions in all_rain_types: action_key = "rain_night"
+    if action_key is None:
+        if conditions in clear_sky: action_key = "clear_day"
+        elif conditions in partly_cloudy: action_key = "partly_cloudy_day"
+        elif conditions in overcast: action_key = "overcast"
+        elif conditions in fog: action_key = "fog"
+        elif conditions in slight_rain: action_key = "slight_rain"
+        elif conditions in rain_showers: action_key = "rain_showers"
+        elif conditions in moderate_rain: action_key = "moderate_rain"
+        elif conditions in heavy_rain: action_key = "heavy_rain"
+        elif conditions in thunderstorm: action_key = "thunderstorm"
+        elif conditions in snow: action_key = "snow"
+    
+    state_changed = first_weather_check or last_condition != conditions or last_night_status != night
+    if state_changed: print(f"New change detected. Updating display.")
+    else: print("Condition unchanged. Continuing animation.")
 
-        if night:
-            if conditions in clear_sky:
-                target_pos = CLEAR_NIGHT_POS
-                effect_func = clear_night_effect
-            elif conditions in partly_cloudy:
-                target_pos = PARTLY_CLOUDY_NIGHT_POS
-                effect_func = clouds_effect
-            elif conditions in all_rain_types:
-                target_pos = RAIN_NIGHT_POS
-                effect_func = rain_effect
-        
-        if target_pos is None:
-            if conditions in clear_sky:
-                target_pos = CLEAR_DAY_POS
-                effect_func = clear_day_effect
-            elif conditions in partly_cloudy:
-                target_pos = PARTLY_CLOUDY_POS
-                effect_func = clouds_effect
-            elif conditions in overcast:
-                target_pos = OVERCAST_POS
-                effect_func = clouds_effect
-            elif conditions in fog:
-                target_pos = FOG_POS
-                effect_func = fog_effect
-            elif conditions in slight_rain:
-                target_pos = SLIGHT_RAIN_POS
-                effect_func = rain_effect
-                effect_params = {'speed': 0.8}
-            elif conditions in rain_showers:
-                target_pos = RAIN_SHOWERS_POS
-                effect_func = rain_effect
-                effect_params = {'speed': 0.6}
-            elif conditions in moderate_rain:
-                target_pos = MODERATE_RAIN_POS
-                effect_func = rain_effect
-                effect_params = {'speed': 0.5}
-            elif conditions in heavy_rain:
-                target_pos = HEAVY_RAIN_POS
-                effect_func = rain_effect
-                effect_params = {'speed': 0.3}
-            elif conditions in thunderstorm:
-                target_pos = THUNDERSTORM_POS
-                effect_func = thunderstorm_effect
-            elif conditions in snow:
-                target_pos = SNOW_POS
-                effect_func = snow_effect
-
-        if target_pos is not None and effect_func is not None:
-            move_servo_slowly(target_pos)
-            effect_func(animation_duration_ms, start_time, **effect_params)
-        else:
-            condition_text = WMO_CODES.get(conditions, "Unknown")
-            print(f"Condition '{condition_text}' ({conditions}) not handled. No action taken.")
-            sleep(5)
-            
-        last_condition = conditions
-        first_weather_check = False
+    if action_key:
+        WEATHER_ACTIONS = {
+            "clear_night": {"pos": CLEAR_NIGHT_POS, "effect": clear_night_effect},
+            "partly_cloudy_night": {"pos": PARTLY_CLOUDY_NIGHT_POS, "effect": clouds_effect},
+            "rain_night": {"pos": RAIN_NIGHT_POS, "effect": rain_effect, "params": {'speed': 0.2}},
+            "clear_day": {"pos": CLEAR_DAY_POS, "effect": clear_day_effect},
+            "partly_cloudy_day": {"pos": PARTLY_CLOUDY_POS, "effect": clouds_effect},
+            "overcast": {"pos": OVERCAST_POS, "effect": clouds_effect},
+            "fog": {"pos": FOG_POS, "effect": fog_effect},
+            "slight_rain": {"pos": SLIGHT_RAIN_POS, "effect": rain_effect, "params": {'speed': 0.1}},
+            "rain_showers": {"pos": RAIN_SHOWERS_POS, "effect": rain_effect, "params": {'speed': 0.2}},
+            "moderate_rain": {"pos": MODERATE_RAIN_POS, "effect": rain_effect, "params": {'speed': 0.35}},
+            "heavy_rain": {"pos": HEAVY_RAIN_POS, "effect": rain_effect, "params": {'speed': 0.5}},
+            "thunderstorm": {"pos": THUNDERSTORM_POS, "effect": thunderstorm_effect},
+            "snow": {"pos": SNOW_POS, "effect": snow_effect}
+        }
+        action = WEATHER_ACTIONS[action_key]
+        if state_changed: move_servo_slowly(action["pos"])
+        action["effect"](weather_check_interval, ticks_ms(), **action.get("params", {}))
     else:
-        print("Condition unchanged. Waiting for next check.")
-        sleep(weather_check_interval / 1000)
+        condition_text = WMO_CODES.get(conditions, "Unknown")
+        print(f"Condition '{condition_text}' ({conditions}) not handled.")
+        sleep(5)
+            
+    last_condition = conditions
+    last_night_status = night
+    first_weather_check = False
 
 def move_servo_slowly(target_position):
-    """Moves the servo smoothly from its current to a target position."""
     global current_servo_position
     step = 1 if target_position > current_servo_position else -1
     for pos in range(current_servo_position, target_position + step, step):
@@ -280,7 +277,6 @@ def move_servo_slowly(target_position):
     current_servo_position = target_position
 
 def servo(degrees):
-    """Converts degrees to a PWM duty cycle and moves the servo."""
     degrees = max(0, min(180, degrees + servo_offset))
     min_pulse_us = 500
     max_pulse_us = 2500
@@ -288,12 +284,9 @@ def servo(degrees):
     servoPin.duty_u16(duty)
 
 def initial_servo_sweep():
-    """Performs your tweaked servo sweep at startup."""
     print("Performing initial servo sweep...")
-    move_servo_slowly(22)
-    sleep(2)
-    move_servo_slowly(95)
-    sleep(2)
+    move_servo_slowly(22); sleep(2)
+    move_servo_slowly(95); sleep(2)
     move_servo_slowly(2)
 
 # --- Main Program Loop ---
@@ -302,14 +295,12 @@ try:
     while True:
         if connect():
             get_conditions()
-            move()
+            run_display_cycle()
         else:
             print("Wi-Fi disconnected. Will try again in 1 minute.")
             sleep(60)
 except KeyboardInterrupt:
     print("Program stopped by user.")
-    pixels.fill((0, 0, 0))
-    pixels.show()
-    toplight.set_pixel(0, (0,0,0,0)) # Turn off top light on exit
-    toplight.show()
+    pixels.fill((0, 0, 0)); pixels.show()
+    toplight.set_pixel(0, (0,0,0,0)); toplight.show()
 
